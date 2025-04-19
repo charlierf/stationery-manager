@@ -6,6 +6,4 @@
   RewriteRule ^ index.html [L]
 </IfModule>
 
-<IfModule mod_headers.c>
-  Header set X-Powered-By "Hostinger Horizons"
-</IfModule>
+
