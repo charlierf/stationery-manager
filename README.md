@@ -1,4 +1,4 @@
-# Papelaria Controle
+# Papelaria Control
 
 Sistema de controle para papelaria, desenvolvido em React com Vite, TailwindCSS e backend Node.js (Express) com Supabase.
 

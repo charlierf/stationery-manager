@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import logo from '/logo.png';
 
 function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -37,7 +38,10 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle className="text-center">Login</CardTitle>
+          <div className="flex flex-col items-center gap-2">
+            <img src={logo} alt="Logo" className="h-16 w-16" />
+            <CardTitle className="text-center">Login</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
@@ -72,6 +76,10 @@ function Login() {
             </div>
             <Button type="submit" className="w-full">
               Entrar
+            </Button>
+            <Button type="button" variant="outline" className="w-full flex items-center justify-center gap-2" onClick={() => navigate('/signup')}>
+              <img src={logo} alt="Logo" className="h-5 w-5" />
+              Registrar-se
             </Button>
           </form>
         </CardContent>

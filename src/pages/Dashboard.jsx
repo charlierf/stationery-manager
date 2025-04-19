@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,6 +7,7 @@ import InsumosManager from "@/components/managers/InsumosManager";
 import ProdutosManager from "@/components/managers/ProdutosManager";
 import VendasManager from "@/components/managers/VendasManager";
 import { LogOut } from "lucide-react";
+import logo from '/logo.png';
 
 console.log("Dashboard component loaded");
 
@@ -23,7 +23,10 @@ function Dashboard() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Sistema de Controle - Papelaria</h1>
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="Logo" className="h-10 w-10" />
+          <h1 className="text-4xl font-bold">Sistema de Controle - Papelaria</h1>
+        </div>
         <Button variant="outline" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           Sair
