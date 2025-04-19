@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+.DS_Store
+*.log
+.vscode/
+api/node_modules/
+api/.env
+*.sqlite
+*.local
+*.cache
+*.swp
