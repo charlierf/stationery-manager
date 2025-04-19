@@ -25,7 +25,7 @@ function Dashboard() {
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-3">
           <img src={logo} alt="Logo" className="h-10 w-10" />
-          <h1 className="text-4xl font-bold">Sistema de Controle - Papelaria</h1>
+          <h1 className="text-4xl font-bold">Sistema de Gerenciamento - Papelaria</h1>
         </div>
         <Button variant="outline" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
