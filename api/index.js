@@ -300,7 +300,7 @@ app.listen(PORT, () => {
 app.post('/auth/reset-password', async (req, res) => {
   const { email } = req.body;
   console.log(`[RESET PASSWORD] Tentativa de redefinição de senha para:`, email);
-  const { data, error } = await supabase.auth.api.resetPasswordForEmail(email, { redirectTo: process.env.REDIRECT_URL || 'http://localhost:5173' });
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${process.env.REDIRECT_URL || 'http://localhost:5173'}/reset-password` });
   
   if (error) {
     console.log(`[RESET PASSWORD] Falha para:`, email, error?.message);

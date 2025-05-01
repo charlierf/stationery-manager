@@ -19,7 +19,7 @@ const ForgotPassword = () => {
     setMessage('');
     try {
       // Use apiPost or direct fetch to your backend endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/auth/forgot-password`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/auth/reset-password`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({ email })

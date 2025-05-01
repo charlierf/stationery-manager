@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Toaster } from "@/components/ui/toaster";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
+import ForgotPassword from "@/pages/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword";
 import Signup from "@/pages/Signup";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 
