@@ -64,7 +64,11 @@ const ResetPassword = () => {
          console.log("Password recovery mode detected");
       }
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
   }, []);
 
 
