@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +81,11 @@ function Login() {
               <img src={logo} alt="Logo" className="h-5 w-5" />
               Registrar-se
             </Button>
+            <div className="text-center text-sm">
+              <Link to="/forgot-password" className="underline text-blue-600 hover:text-blue-800">
+                Esqueceu sua senha?
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>

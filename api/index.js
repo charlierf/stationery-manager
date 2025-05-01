@@ -295,3 +295,17 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`API rodando na porta ${PORT}`);
 });
+
+// Rota para solicitar redefinição de senha
+app.post('/auth/reset-password', async (req, res) => {
+  const { email } = req.body;
+  console.log(`[RESET PASSWORD] Tentativa de redefinição de senha para:`, email);
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${process.env.REDIRECT_URL || 'http://localhost:5173'}/reset-password` });
+  
+  if (error) {
+    console.log(`[RESET PASSWORD] Falha para:`, email, error?.message);
+    return res.json({ message: 'Se o email estiver cadastrado, um link de recuperação foi enviado.' });
+  }
+  console.log(`[RESET PASSWORD] Sucesso para:`, email);
+  res.json({ message: 'Se o email estiver cadastrado, um link de recuperação foi enviado.' });
+});
