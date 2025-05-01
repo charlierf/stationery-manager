@@ -195,20 +195,60 @@ app.put('/produtos/:id', authenticateToken, async (req, res) => {
 
 app.delete('/produtos/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
-  console.log('Tentando deletar produto', id, 'do usuário', req.user.id);
-  const { error, count } = await supabase
-    .from('produtos')
-    .delete({ count: 'exact' })
-    .eq('id', id)
-    .eq('user_id', req.user.id);
-  if (error) {
-    console.error('Erro ao deletar produto:', error.message);
-    return res.status(500).json({ error: error.message });
+  const userId = req.user.id;
+
+  try {
+    // 1. Verify the product belongs to the user before doing anything
+    const { data: productData, error: productError } = await supabase
+      .from('produtos')
+      .select('id')
+      .eq('id', id)
+      .eq('user_id', userId)
+      .single(); // Use single to get one record or null
+
+    if (productError || !productData) {
+      // Handle cases where the product doesn't exist or doesn't belong to the user
+      console.error(`[DELETE /produtos/${id}] Produto não encontrado ou não pertence ao usuário ${userId}. Erro:`, productError?.message);
+      return res.status(404).json({ error: 'Produto não encontrado ou acesso negado.' });
+    }
+
+    // 2. Delete related entries from produto_insumo first
+    console.log(`[DELETE /produtos/${id}] Deletando relações de produto_insumo para produto ${id}`);
+    const { error: deleteRelError } = await supabase
+      .from('produto_insumo')
+      .delete()
+      .eq('produto_id', id);
+
+    if (deleteRelError) {
+      // If deleting relations fails, stop and report error
+      console.error(`[DELETE /produtos/${id}] Erro ao deletar relações de produto_insumo:`, deleteRelError.message);
+      return res.status(500).json({ error: `Erro ao remover associações do produto: ${deleteRelError.message}` });
+    }
+    console.log(`[DELETE /produtos/${id}] Relações de produto_insumo deletadas com sucesso.`);
+
+    // 3. Now delete the product itself
+    console.log(`[DELETE /produtos/${id}] Deletando produto ${id}`);
+    const { error: deleteProdError } = await supabase
+      .from('produtos')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId); // Redundant check, but safe
+
+    if (deleteProdError) {
+      // If deleting the product fails (unexpected after checks)
+      console.error(`[DELETE /produtos/${id}] Erro ao deletar produto:`, deleteProdError.message);
+      return res.status(500).json({ error: `Erro ao remover o produto: ${deleteProdError.message}` });
+    }
+
+    console.log(`[DELETE /produtos/${id}] Produto ${id} deletado com sucesso.`);
+    // Send 204 No Content on successful deletion
+    res.status(204).send();
+
+  } catch (error) {
+    // Catch any unexpected errors during the process
+    console.error(`[DELETE /produtos/${id}] Erro inesperado:`, error);
+    res.status(500).json({ error: 'Erro interno no servidor ao tentar remover o produto.' });
   }
-  if (count === 0) {
-    return res.status(404).json({ error: 'Produto não encontrado para este usuário' });
-  }
-  res.status(204).send();
 });
 
 // --- NOVAS ROTAS VENDAS COM RELAÇÃO PRODUTOS ---
