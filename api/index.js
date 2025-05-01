@@ -7,9 +7,25 @@ const app = express();
 app.use(express.json());
 
 const cors = require('cors');
+
+const allowedOrigins = [
+  'http://localhost:5173', // Local development
+  'https://papelaria.nebulaweb.com.br' // Deployed frontend
+];
+
 app.use(cors({
-  origin: '*', // ou especifique 'http://localhost:5173' para mais segurança
-  credentials: false
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Ensure POST is allowed
+  allowedHeaders: 'Content-Type,Authorization', // Allow necessary headers
+  credentials: false // Keep as false if not using cookies/sessions across domains
 }));
 
 // Inicializa o cliente Supabase usando variáveis de ambiente
